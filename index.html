@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Korean Dialect TTS Demo</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      max-width: 700px;
+      margin: 2rem auto;
+      padding: 2rem;
+      line-height: 1.6;
+    }
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 0.5rem;
+    }
+    select, input, button {
+      display: block;
+      margin-top: 0.5rem;
+      margin-bottom: 1rem;
+      padding: 0.5rem;
+      width: 100%;
+      font-size: 1rem;
+    }
+    .readonly-box {
+      border: 1px solid #ccc;
+      padding: 0.5rem;
+      background: #f9f9f9;
+    }
+    audio {
+      width: 100%;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>SATURI: 다중 방언 지원 한국어 TTS 모델</h1>
+  <p>
+    이 연구는 한국어의 다양한 지역 방언을 지원하는 최초의 음성 합성 프레임워크를 제안하고, 입력 문장에 대해 방언의 강도를 조절할 수 있는 TTS 시스템을 구현하였습니다. 또한 classification network의 결과를 기반으로 방언의 정도를 수치로 표현하는 Dialect-score를 새롭게 정의하였습니다.
+  </p>
+  <p>
+    📄 <a href="paper.pdf" target="_blank">논문 PDF</a>
+  </p>
+
+  <h2>💬 TTS Demo</h2>
+
+  <label for="text">Input Text</label>
+  <div class="readonly-box" id="text">언제가 놀러가기가 가장 좋은 계절이라고 생각해?</div>
+
+  <label for="model">Model</label>
+  <select id="model">
+    <option value="onehot">One-hot fine-tuned model</option>
+    <option value="soft">Soft-label fine-tuned model</option>
+  </select>
+
+  <label for="dialect">Select Dialect</label>
+  <select id="dialect">
+    <option value="standard">표준어</option>
+    <option value="gyeongsang">경상도</option>
+    <option value="chungcheong">충청도</option>
+    <option value="jeolla">전라도</option>
+    <option value="gangwon">강원도</option>
+    <option value="jeju">제주도</option>
+    <option value="standard50_gyeongsang50">표준어 0.5 + 경상도 0.5</option>
+  </select>
+
+  <button onclick="synthesize()">🔊 음성합성</button>
+
+  <audio id="audio" controls style="display:none;"></audio>
+
+  <script>
+    function synthesize() {
+      const model = document.getElementById("model").value;
+      const dialect = document.getElementById("dialect").value;
+      const audio = document.getElementById("audio");
+
+      const fileName = `${model}_${dialect}.wav`;
+      const audioPath = `audio/${fileName}`;
+      audio.src = audioPath;
+      audio.style.display = "block";
+      audio.play();
+    }
+  </script>
+
+</body>
+</html>
